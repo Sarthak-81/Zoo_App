@@ -13,7 +13,7 @@ $this->title = 'All Zoos';
     <?php foreach ($zoos as $zoo): ?>
     <!-- <div class="col-lg-3"> -->
         <div class="card" style="width: 18rem;">
-            <img src="<?= Yii::$app->urlManager->baseUrl ?>/Photos/Tiger.jpg" class="card-img-top" alt="Image">
+            <img src="<?= Yii::$app->urlManager->baseUrl ?> + "/Photos/Tiger.jpg" class="card-img-top" alt="Image">
             <div class="card-body">
                 <h5 style="font-weight: bolder;" class="card-title"><?= Html::encode($zoo['Name']) ?></h5>
                 <p class="card-text">Location: <?= Html::encode($zoo['Location']) ?></p>

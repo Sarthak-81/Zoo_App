@@ -11,6 +11,7 @@ use app\models\LoginForm;
 use app\models\Zoo;
 use app\models\Animal;
 use app\models\History;
+use app\models\Archive;
 use app\filters\BeforeLogin;
 use app\filters\AfterLogin;
 use yii\web\NotFoundHttpException;
@@ -178,6 +179,28 @@ class RegisterController extends Controller
         ]);
     }
 
+    public function actionArchive()
+    {
+        $model = new Archive();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $sql = "INSERT INTO Archive (Entity_Type, Name, entity_id, Reason, Archive_Date)
+        VALUES (:Entity_Type, :Name, :entity_id, :Reason, :Archive_Date)";
+
+            $params = [
+                'Entity_Type' => $model->Entity_Type,
+                'Name' => $model->Name,
+                'entity_id' => $model->entity_id,
+                'Reason' => $model->Reason,
+                'Archive_Date' => $model->Archive_Date,
+            ];
+            Yii::$app->db->createCommand($sql, $params)->execute();
+            return $this->redirect(['archive']);
+        }
+        return $this->render('event/archiveform', [
+            'model' => $model,
+        ]);
+    }
+
     public function actionViewzoo()
     {
         $zoos = Yii::$app->db->createCommand("SELECT * FROM Zoo")->queryAll();
@@ -191,6 +214,14 @@ class RegisterController extends Controller
         $animals = Yii::$app->db->createCommand("SELECT * FROM Animal")->queryAll();
         return $this->render('event/viewanimal', [
             'animals' => $animals,
+        ]);
+    }
+
+    public function actionViewarchive()
+    {
+        $archive = Yii::$app->db->createCommand("SELECT * FROM Archive")->queryAll();
+        return $this->render('event/archive', [
+            'archive' => $archive,
         ]);
     }
 

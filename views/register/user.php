@@ -66,10 +66,10 @@ $this->registerCss("
 
             <div class="col-lg-3">
                 <div class="first">
-                <a href="#">Archive</a>
+                <a href="<?= Yii::$app->urlManager->createUrl(['register/archive']) ?>">Archive</a>
                 <p>All the archive records of zoos and animals that have occurred in the past with valid reason.</p>
                 </div>
-                <p><?= Html::a('Add Archive', ['archieve'], ['class' => 'btn btn-outline-secondary']) ?></p>
+                <p><?= Html::a('Add Archive', ['archive'], ['class' => 'btn btn-outline-secondary']) ?></p>
             </div>
 
         </div </div>
