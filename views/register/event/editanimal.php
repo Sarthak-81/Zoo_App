@@ -9,12 +9,12 @@ use yii\widgets\ActiveForm;
 $form = Activeform::begin();
 ?>
 
-<div class="zoo-edit">
-    <h1>Edit Zoo Details</h1>
+<div class="animal-edit">
+    <h1>Edit Animal Details</h1>
 
-    <?= $form->field($zoo, 'Phone_no')->textInput(['autofocus' => true]) ?>
+    <?= $form->field($animal, 'zoo_id')->textInput(['autofocus' => true]) ?>
 
-    <?= $form->field($zoo, 'Description')->textInput() ?>
+    <?= $form->field($animal, 'Arrival_Date')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Update', ['class' => 'btn btn-primary']) ?>

@@ -5,12 +5,14 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-$this->title = 'Archive Zoo or Animal';
+$this->title = 'Archive Entity';
 
 $form = ActiveForm::begin(); ?>
 
 <div class="event-transfer-form">
     <h1 style="color:blue"><?= Html::encode($this->title) ?></h1>
+
+    <br>
 
 <?= $form->field($model, 'Entity_Type')->dropDownList(
     [

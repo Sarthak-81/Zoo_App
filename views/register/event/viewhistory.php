@@ -9,13 +9,13 @@ $this->title = 'Transfer History';
 
 <div class="register-history">
     <h1>Transfer History of Animals</h1>
+    <br>
     <div class="table">
-    <?php Pjax::begin(); ?>
         <table class="table table table-striped">
             <thead>
                 <tr>
                     <th scope="col">Sr No</th>
-                    <th scope="col">Animal</th>
+                    <th scope="col">Name</th>
                     <th scope="col">Animal ID</th>
                     <th scope="col">From Zoo ID</th>
                     <th scope="col">To Zoo ID</th>
@@ -38,6 +38,5 @@ $this->title = 'Transfer History';
                 <?php endforeach; ?>
             </tbody>
         </table>
-        <?php Pjax::end(); ?>
     </div>
 </div>

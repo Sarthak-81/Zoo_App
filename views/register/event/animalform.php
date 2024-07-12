@@ -11,6 +11,7 @@ $form = ActiveForm::begin(); ?>
 
 <div class="register-animalform">
     <h1 style="color:blue"><?= Html::encode($this->title) ?></h1>
+    <br>
 
 <?= $form->field($model, 'Name')->textInput(['autofocus' => true]) ?>
 
@@ -34,7 +35,7 @@ $form = ActiveForm::begin(); ?>
     ['prompt' => 'Select']
 )?>
 
-<?= $form->field($model, 'Arrival_Date')->textarea() ?>
+<?= $form->field($model, 'Arrival_Date')->textInput() ?>
 
 <div class="form-group">
     <?= Html::submitButton('Save Animal', ['class' => 'btn btn-success']) ?>

@@ -33,7 +33,7 @@ class LoginForm extends Model
 
     public function getUser()
     {
-        $user = Yii::$app->db->createCommand("SELECT * FROM Users WHERE name = :name")
+        $user = Yii::$app->db->createCommand("SELECT * FROM users WHERE name = :name")
         ->bindValue(':name', $this->name)
         ->queryOne(); 
         return $user;

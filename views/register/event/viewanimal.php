@@ -1,31 +1,42 @@
 <?php
 
 use yii\helpers\Html;
+
 /** @var yii\web\View $this */
+
+use yii\helpers\Url;
 
 $this->title = 'All Animals';
 ?>
 
 <div class="register-view-zoo">
     <h1 style="color: brown"><?= Html::encode($this->title) ?></h1>
-
+    <br>
     <div class="row">
-    <?php foreach ($animals as $animal): ?>
-    <!-- <div class="col-lg-3"> -->
-        <div class="card" style="width: 18rem;">
-            <img src="" class="card-img-top" alt="Image">
-            <div class="card-body">
-                <h5 style="font-weight: bolder;" class="card-title"><?= Html::encode($animal['Name']) ?></h5>
-                <p class="card-text">Gender: <?= Html::encode($animal['Gender']) ?></p>
-                <p class="card-text">Species: <?= Html::encode($animal['Species']) ?></p>
-                <p class="card-text">Arrival Date: <?= Html::encode($animal['Arrival_Date']) ?></p>
-                <p class="card-text">Zoo no: <?= Html::encode($animal['zoo_id']) ?></p>
-                <?= Html::a('Edit', ['editanimal'], ['class' => 'btn btn-primary']) ?>
-                <?= Html::a('Photo', ['zoo/edit'], ['class' => 'btn btn-info']) ?>
+        <?php foreach ($animals as $animal) : ?>
+            <div class="card" style="width: 18rem;">
+                <?php if (!empty($animal['photos'])) : ?>
+                    <?php $photoUrl = Url::to('@web/uploads/animal/' . $animal['photos'][0]['photo_url']); ?>
+                    <img src="<?= $photoUrl ?>" class="card-img-top" alt="Animal Photo">
+                <?php else : ?>
+                    <img src="<?= Url::to('@web/uploads/animal/elephant.jpg') ?>" class="card-img-top" alt="Default Photo">
+                <?php endif; ?>
+                <div class="card-body">
+                    <h5 style="font-weight: bolder;" class="card-title"><?= Html::encode($animal['Name']) ?></h5>
+                    <p class="card-text">Gender: <?= Html::encode($animal['Gender']) ?></p>
+                    <p class="card-text">Species: <?= Html::encode($animal['Species']) ?></p>
+                    <p class="card-text">Arrival Date: <?= Html::encode($animal['Arrival_Date']) ?></p>
+                    <p class="card-text">Zoo no: <?= Html::encode($animal['zoo_id']) ?></p>
+                    <?= Html::a('Edit', ['editanimal', 'id' => $animal['id']], ['class' => 'btn btn-primary']) ?>
+                    <?= Html::a('View Photos', ['#'], ['class' => 'btn btn-info']) ?>
+                </div>
             </div>
-        <!-- </div> -->
-    </div>
-<?php endforeach; ?>
-
+        <?php endforeach; ?>
     </div>
 </div>
+
+                <?= $imageUrl = Url::to('@web/uploads/animal/Tiger.jpg'); ?>
+                <img src="<?= $imageUrl ?>" class="card-img-top" alt="img">
+
+<!-- I want while viewanimal.php is rendering via actionViewanimal, photo associated with different animals should also render -->
+

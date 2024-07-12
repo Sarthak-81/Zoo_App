@@ -8,9 +8,9 @@ $this->title = 'Zoo App';
 
 <div class="register-index">
     <div class="jumbotron text-center bg-transparent">
-        <h1 class="display-4">Welcome to Our Zoo!</h1>
+        <h1 class="display-3">Welcome to Zoo Dashboard!</h1>
         <br>
-        <p class="lead">Discover the wonders of wildlife</p>
+        <p class="display-6">Discover the wonders of wildlife</p>
         <br>
         <p><?= Html::a('Get Started', ['register/category'], ['class' => 'btn btn-lg btn-primary']) ?></p>
     </div>

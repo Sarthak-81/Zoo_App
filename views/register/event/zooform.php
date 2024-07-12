@@ -11,6 +11,7 @@ $form = ActiveForm::begin(); ?>
 
 <div class="register-zooform">
     <h1 style="color:blue"><?= Html::encode($this->title) ?></h1>
+    <br>
 
 <?= $form->field($model, 'Name')->textInput(['autofocus' => true]) ?>
 

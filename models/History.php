@@ -28,7 +28,7 @@ class History extends ActiveRecord
 
     public static function tableName()
     {
-        return 'Transfer_History';
+        return 'transfer_history';
     }
 
     public function rules()

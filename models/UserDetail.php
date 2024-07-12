@@ -17,7 +17,7 @@ class UserDetail extends ActiveRecord
 {
     public static function tableName()
     {
-        return 'Users';
+        return 'users';
     }
 
     public function rules()

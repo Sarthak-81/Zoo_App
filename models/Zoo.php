@@ -2,8 +2,11 @@
 
 namespace app\models;
 
-use yii\base\Model;
+use Yii;
 use yii\db\ActiveRecord;
+
+// ActiveRecord is a Model that uses a database engine to store the model(s) data.
+// yii\base\Model is a Model that does not specify how the data is being stored.
 
 /**
  * Class Zoo
@@ -22,7 +25,7 @@ class Zoo extends ActiveRecord
     public $Description;
     public static function tableName()
     {
-        return 'Zoo'; 
+        return 'zoo'; 
     }
 
     public function rules()
@@ -33,4 +36,12 @@ class Zoo extends ActiveRecord
         ];
     }
 
+    public function getPhotos()
+    {
+        $sql = "SELECT * FROM photo WHERE object_type = 'zoo' AND object_id = :zooId";
+        $params = [':zooId' => $this->id];
+        $photos = Yii::$app->db->createCommand($sql, $params)->queryAll();
+
+        return $photos;
+    }
 }

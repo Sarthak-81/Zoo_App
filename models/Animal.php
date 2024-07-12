@@ -27,7 +27,7 @@ class Animal extends ActiveRecord
 
     public static function tableName()
     {
-        return 'Animal';
+        return 'animal';
     }
 
     public function rules()

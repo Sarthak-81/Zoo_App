@@ -27,7 +27,7 @@ class Archive extends ActiveRecord
 
     public static function tableName()
     {
-        return 'Archive';
+        return 'archive';
     }
 
     public function rules()
@@ -35,7 +35,7 @@ class Archive extends ActiveRecord
         return [
             [['Entity_Type', 'Name', 'entity_id', 'Reason', 'Archive_Date'], 'required'],
             [['Entity_Type', 'Name', 'Reason'], 'string', 'max' => 255],
-            [['Transfer_Date'], 'datetime', 'format' => 'yyyy-MM-dd'],
+            [['Archive_Date'], 'datetime', 'format' => 'yyyy-MM-dd'],
         ];
     }
 }

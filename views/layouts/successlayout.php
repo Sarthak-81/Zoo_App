@@ -23,6 +23,7 @@ AppAsset::register($this);
 
 <?php
 $name = Yii::$app->session->get('name');
+$email = Yii::$app->session->get('email');
 NavBar::begin([
   'brandLabel' => 'Home',
   'brandUrl' => ['register/user'],
@@ -32,7 +33,7 @@ NavBar::begin([
 ]);
 
 $menuItems = [
-  ['label'=> $name, 'url'=> ['register/profile']],
+  ['label'=> 'Profile', 'url'=> ['register/profile']],
   ['label'=> 'Logout', 'url' => ['register/logout']],
 ];
 
