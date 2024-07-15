@@ -19,6 +19,7 @@ $this->registerCss("
     .first a:hover {
         color: #0056b3;
         text-decoration: underline; 
+        font-style: italic;
     }
     .first p {
         font-size: 18px;
@@ -43,33 +44,33 @@ $this->registerCss("
             <div class="col-lg-3">
                 <div class="first">
                     <a href="<?= Yii::$app->urlManager->createUrl(['register/viewzoo']) ?>">All Zoos</a>
-                    <p>List of zoos that are available with details - Name, Location, Phone number and Description.</p>
+                    <p>List of Zoos that are available with details - Name, Location, Phone number and Description.</p>
                 </div>
-                <p><?= Html::a('Add Zoo', ['addzoo'], ['class' => 'btn btn-outline-secondary']) ?></p>
+                <p><?= Html::a('Add Zoo', ['addzoo'], ['class' => 'btn btn-outline-primary']) ?></p>
             </div>
 
             <div class="col-lg-3">
                 <div class="first">
                 <a href="<?= Yii::$app->urlManager->createUrl(['register/viewanimal']) ?>">All Animals</a>
-                <p>List of animals that are available a with details - Name, Zoo no, Gender, Species, Photo and Arrival Date.</p>
+                <p>List of Animals that are available with details - Name, Zoo no, Gender, Species, Photo and Arrival Date.</p>
                 </div>
-                <p><?= Html::a('Add Animal', ['addanimal'], ['class' => 'btn btn-outline-secondary']) ?></p>
+                <p><?= Html::a('Add Animal', ['addanimal'], ['class' => 'btn btn-outline-primary']) ?></p>
             </div>
 
             <div class="col-lg-3">
                 <div class="first">
                 <a href="<?= Yii::$app->urlManager->createUrl(['register/viewhistory']) ?>">Transfer History</a>
-                <p>All transfer records of animals from one zoo to another with valid reason for the transfer of animal to happen.</p>
+                <p>All transfer records of Animal from one Zoo to another with valid reason for the transfer to happen.</p>
                 </div>
-                <p><?= Html::a('Add Transfer', ['managehistory'], ['class' => 'btn btn-outline-secondary']) ?></p>
+                <p><?= Html::a('Add Transfer', ['managehistory'], ['class' => 'btn btn-outline-primary']) ?></p>
             </div>
 
             <div class="col-lg-3">
                 <div class="first">
                 <a href="<?= Yii::$app->urlManager->createUrl(['register/viewarchive']) ?>">Archive</a>
-                <p>All the archive records of zoos and animals that have occurred in the past with valid reason.</p>
+                <p>All the archive records of Zoos and Animals that have occurred in the past with valid reason.</p>
                 </div>
-                <p><?= Html::a('Add Archive', ['archive'], ['class' => 'btn btn-outline-secondary']) ?></p>
+                <p><?= Html::a('Add Archive', ['archive'], ['class' => 'btn btn-outline-primary']) ?></p>
             </div>
 
         </div </div>

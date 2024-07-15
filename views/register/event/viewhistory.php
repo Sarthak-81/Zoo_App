@@ -28,11 +28,11 @@ $this->title = 'Transfer History';
                 <?php foreach ($transferHistories as $index => $history) : ?>
                     <tr>
                         <th scope="row"><?= $index + 1 ?></th>
-                        <td><?= Html::encode($history['Animal']) ?></td>
+                        <td><?= Html::encode($history['animal']) ?></td>
                         <td><?= Html::encode($history['animal_id']) ?></td>
-                        <td><?= Html::encode($history['From_zoo_id']) ?></td>
-                        <td><?= Html::encode($history['To_zoo_id']) ?></td>
-                        <td><?= Html::encode($history['Reason']) ?></td>
+                        <td><?= Html::encode($history['from_zoo_id']) ?></td>
+                        <td><?= Html::encode($history['to_zoo_id']) ?></td>
+                        <td><?= Html::encode($history['reason']) ?></td>
                         <td><?= Html::encode($history['Transfer_Date']) ?></td>
                     </tr>
                 <?php endforeach; ?>

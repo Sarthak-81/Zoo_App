@@ -20,7 +20,7 @@ use yii\db\ActiveRecord;
 class Animal extends ActiveRecord
 {
     public $Name;
-    public $zoo_id;
+    public $zoo_id; 
     public $Gender;
     public $Species;
     public $Arrival_Date;

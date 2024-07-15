@@ -34,7 +34,7 @@ class RegisterController extends Controller
                     'class' => AfterLogin::class,
                     'only' => 
                     ['logout', 'user', 'profile', 'viewzoo', 'viewanimal', 'addzoo', 'addanimal', 'managehistory', 'viewhistory', 'archive', 'viewarchive',
-                     'editzoo', 'editanimal'
+                     'editzoo', 'editanimal', 'viewinzoo'
                     ],
                 ],
             ];
@@ -162,7 +162,29 @@ class RegisterController extends Controller
             ];
 
             Yii::$app->db->createCommand($sql, $params)->execute();
-            return $this->redirect(['viewzoo']);
+
+            $name = $model->Name;
+            $location = $model->Location;
+            $phone_no = $model->Phone_no;
+            $description = $model->Description;
+
+            $client = new Client();
+            $response = $client->createRequest()
+                ->setMethod('POST')
+                ->setUrl('http://localhost:8080/zoo/add')
+                ->setFormat(Client::FORMAT_JSON)
+                ->setData([
+                    'name' => $name,
+                    'location' => $location,
+                    'phone no' => $phone_no,
+                    'description' => $description
+                ])
+                ->send();
+            if ($response->isOk) {
+                return $this->redirect(['viewzoo']);
+            } else {
+                echo "Some error" . $response->statusCode;
+            }
         }
 
         return $this->render('event/addzoo', [
@@ -186,7 +208,31 @@ class RegisterController extends Controller
             ];
 
             Yii::$app->db->createCommand($sql, $params)->execute();
-            return $this->redirect(['viewanimal']);
+
+            $name = $model->Name;
+            $zoo_id = $model->zoo_id;
+            $gender = $model->Gender;
+            $species = $model->Species;
+            $arrival_date = $model->Arrival_Date;
+
+            $client = new Client();
+            $response = $client->createRequest()
+                ->setMethod('POST')
+                ->setUrl('http://localhost:8080/animal/add')
+                ->setFormat(Client::FORMAT_JSON)
+                ->setData([
+                    'name' => $name,
+                    'zoo_id' => $zoo_id,
+                    'gender' => $gender,
+                    'species' => $species,
+                    'arrival_date' => $arrival_date
+                ])
+                ->send();
+            if ($response->isOk) {
+                return $this->redirect(['viewanimal']);
+            } else {
+                echo "Some error" . $response->statusCode;
+            }
         }
 
         return $this->render('event/addanimal', [
@@ -289,6 +335,7 @@ class RegisterController extends Controller
     public function actionEditzoo($id)
     {
         $zooData = Yii::$app->db->createCommand('SELECT * FROM zoo WHERE id = :id')
+        // use bindValue to bind a value to a SQL parameter. 
             ->bindValue(':id', $id)
             ->queryOne();
         // This returns an array. 
@@ -332,5 +379,9 @@ class RegisterController extends Controller
         return $this->render('event/editanimal', ['animal' => $animal]);
     }
 
-}
+    public function actionViewinzoo($id)
+    {
+        return $this->render('event/viewinzoo');
+    }
 
+}

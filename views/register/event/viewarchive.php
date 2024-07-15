@@ -26,10 +26,10 @@ $this->title = 'Transfer History';
                 <?php foreach ($archive as $index => $archives) : ?>
                     <tr>
                         <th scope="row"><?= $index + 1 ?></th>
-                        <td><?= Html::encode($archives['Entity_Type']) ?></td>
-                        <td><?= Html::encode($archives['Name']) ?></td>
+                        <td><?= Html::encode($archives['entity_type']) ?></td>
+                        <td><?= Html::encode($archives['name']) ?></td>
                         <td><?= Html::encode($archives['entity_id']) ?></td>
-                        <td><?= Html::encode($archives['Reason']) ?></td>
+                        <td><?= Html::encode($archives['reason']) ?></td>
                         <td><?= Html::encode($archives['Archive_Date']) ?></td>
                     </tr>
                 <?php endforeach; ?>

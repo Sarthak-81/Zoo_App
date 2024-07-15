@@ -22,10 +22,10 @@ $this->title = 'All Animals';
                     <img src="<?= Url::to('@web/uploads/animal/elephant.jpg') ?>" class="card-img-top" alt="Default Photo">
                 <?php endif; ?>
                 <div class="card-body">
-                    <h5 style="font-weight: bolder;" class="card-title"><?= Html::encode($animal['Name']) ?></h5>
-                    <p class="card-text">Gender: <?= Html::encode($animal['Gender']) ?></p>
-                    <p class="card-text">Species: <?= Html::encode($animal['Species']) ?></p>
-                    <p class="card-text">Arrival Date: <?= Html::encode($animal['Arrival_Date']) ?></p>
+                    <h5 style="font-weight: bolder;" class="card-title"><?= Html::encode($animal['name']) ?></h5>
+                    <p class="card-text">Gender: <?= Html::encode($animal['gender']) ?></p>
+                    <p class="card-text">Species: <?= Html::encode($animal['species']) ?></p>
+                    <p class="card-text">Arrival Date: <?= Html::encode($animal['arrival_date']) ?></p>
                     <p class="card-text">Zoo no: <?= Html::encode($animal['zoo_id']) ?></p>
                     <?= Html::a('Edit', ['editanimal', 'id' => $animal['id']], ['class' => 'btn btn-primary']) ?>
                     <?= Html::a('View Photos', ['#'], ['class' => 'btn btn-info']) ?>

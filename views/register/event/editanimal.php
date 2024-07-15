@@ -17,7 +17,7 @@ $form = Activeform::begin();
     <?= $form->field($animal, 'Arrival_Date')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Update', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('Update', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
