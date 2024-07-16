@@ -19,11 +19,11 @@ use yii\db\ActiveRecord;
 
 class History extends ActiveRecord
 {
-    public $Animal;
+    public $name;
     public $animal_id;
-    public $From_zoo_id;
-    public $To_zoo_id;
-    public $Reason;
+    public $from_zoo_id;
+    public $to_zoo_id;
+    public $reason;
     public $Transfer_Date;
 
     public static function tableName()
@@ -34,8 +34,8 @@ class History extends ActiveRecord
     public function rules()
     {
         return [
-            [['Animal', 'animal_id', 'From_zoo_id', 'To_zoo_id', 'Reason', 'Transfer_Date'], 'required'],
-            [['Animal', 'Reason'], 'string', 'max' => 255],
+            [['name', 'animal_id', 'from_zoo_id', 'to_zoo_id', 'reason', 'Transfer_Date'], 'required'],
+            [['name', 'reason'], 'string', 'max' => 255],
             [['Transfer_Date'], 'datetime', 'format' => 'yyyy-MM-dd'],
         ];
     }

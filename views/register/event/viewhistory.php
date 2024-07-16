@@ -28,7 +28,7 @@ $this->title = 'Transfer History';
                 <?php foreach ($transferHistories as $index => $history) : ?>
                     <tr>
                         <th scope="row"><?= $index + 1 ?></th>
-                        <td><?= Html::encode($history['animal']) ?></td>
+                        <td><?= Html::encode($history['name']) ?></td>
                         <td><?= Html::encode($history['animal_id']) ?></td>
                         <td><?= Html::encode($history['from_zoo_id']) ?></td>
                         <td><?= Html::encode($history['to_zoo_id']) ?></td>

@@ -25,8 +25,6 @@ $this->title = 'All Animals';
                     <h5 style="font-weight: bolder;" class="card-title"><?= Html::encode($animal['name']) ?></h5>
                     <p class="card-text">Gender: <?= Html::encode($animal['gender']) ?></p>
                     <p class="card-text">Species: <?= Html::encode($animal['species']) ?></p>
-                    <p class="card-text">Arrival Date: <?= Html::encode($animal['arrival_date']) ?></p>
-                    <p class="card-text">Zoo no: <?= Html::encode($animal['zoo_id']) ?></p>
                     <?= Html::a('Edit', ['editanimal', 'id' => $animal['id']], ['class' => 'btn btn-primary']) ?>
                     <?= Html::a('View Photos', ['#'], ['class' => 'btn btn-info']) ?>
                 </div>
@@ -38,5 +36,4 @@ $this->title = 'All Animals';
                 <?= $imageUrl = Url::to('@web/uploads/animal/Tiger.jpg'); ?>
                 <img src="<?= $imageUrl ?>" class="card-img-top" alt="img">
 
-<!-- I want while viewanimal.php is rendering via actionViewanimal, photo associated with different animals should also render -->
 

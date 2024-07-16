@@ -34,7 +34,7 @@ class RegisterController extends Controller
                     'class' => AfterLogin::class,
                     'only' => 
                     ['logout', 'user', 'profile', 'viewzoo', 'viewanimal', 'addzoo', 'addanimal', 'managehistory', 'viewhistory', 'archive', 'viewarchive',
-                     'editzoo', 'editanimal', 'viewinzoo'
+                     'editzoo', 'editanimal', 'viewinzoo', 'addinzoo'
                     ],
                 ],
             ];
@@ -196,24 +196,20 @@ class RegisterController extends Controller
     {
         $model = new Animal();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $sql = "INSERT INTO animal (Name, zoo_id, Gender, Species, Arrival_Date)
-            VALUES (:Name, :zoo_id, :Gender, :Species, :Arrival_Date)";
+            $sql = "INSERT INTO animal (Name, Gender, Species)
+            VALUES (:Name, :Gender, :Species)";
 
             $params = [
                 'Name' => $model->Name,
-                'zoo_id' => $model->zoo_id,
                 'Gender' => $model->Gender,
                 'Species' => $model->Species,
-                'Arrival_Date' => $model->Arrival_Date,
             ];
 
             Yii::$app->db->createCommand($sql, $params)->execute();
 
             $name = $model->Name;
-            $zoo_id = $model->zoo_id;
             $gender = $model->Gender;
             $species = $model->Species;
-            $arrival_date = $model->Arrival_Date;
 
             $client = new Client();
             $response = $client->createRequest()
@@ -222,10 +218,8 @@ class RegisterController extends Controller
                 ->setFormat(Client::FORMAT_JSON)
                 ->setData([
                     'name' => $name,
-                    'zoo_id' => $zoo_id,
                     'gender' => $gender,
                     'species' => $species,
-                    'arrival_date' => $arrival_date
                 ])
                 ->send();
             if ($response->isOk) {
@@ -245,15 +239,15 @@ class RegisterController extends Controller
     {
         $model = new History();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $sql = "INSERT INTO transfer_history (Animal, animal_id, From_zoo_id, To_zoo_id, Reason, Transfer_Date)
-        VALUES (:Animal, :animal_id, :From_zoo_id, :To_zoo_id, :Reason, :Transfer_Date)";
+            $sql = "INSERT INTO transfer_history (name, animal_id, from_zoo_id, to_zoo_id, reason, Transfer_Date)
+        VALUES (:name, :animal_id, :from_zoo_id, :to_zoo_id, :reason, :Transfer_Date)";
 
             $params = [
-                'Animal' => $model->Animal,
+                'name' => $model->name,
                 'animal_id' => $model->animal_id,
-                'From_zoo_id' => $model->From_zoo_id,
-                'To_zoo_id' => $model->To_zoo_id,
-                'Reason' => $model->Reason,
+                'from_zoo_id' => $model->from_zoo_id,
+                'to_zoo_id' => $model->to_zoo_id,
+                'reason' => $model->reason,
                 'Transfer_Date' => $model->Transfer_Date,
             ];
             Yii::$app->db->createCommand($sql, $params)->execute();
@@ -268,13 +262,12 @@ class RegisterController extends Controller
     {
         $model = new Archive();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $sql = "INSERT INTO archive (Entity_Type, Name, entity_id, Reason, Archive_Date)
-        VALUES (:Entity_Type, :Name, :entity_id, :Reason, :Archive_Date)";
+            $sql = "INSERT INTO archive (Entity_Type, Name, Reason, Archive_Date)
+        VALUES (:Entity_Type, :Name, :Reason, :Archive_Date)";
 
             $params = [
                 'Entity_Type' => $model->Entity_Type,
                 'Name' => $model->Name,
-                'entity_id' => $model->entity_id,
                 'Reason' => $model->Reason,
                 'Archive_Date' => $model->Archive_Date,
             ];
@@ -369,9 +362,8 @@ class RegisterController extends Controller
         $animal->attributes = $animalData;
         if(Yii::$app->request->isPost && $animal->load(Yii::$app->request->post()))
         {
-            Yii::$app->db->createCommand('UPDATE animal SET zoo_id = :zoo_id, Arrival_Date = :Arrival_Date WHERE id = :id')
-                ->bindValue(':zoo_id', $animal->zoo_id)
-                ->bindValue(':Arrival_Date', $animal->Arrival_Date)
+            Yii::$app->db->createCommand('UPDATE animal SET Name = :Name WHERE id = :id')
+                ->bindValue(':Name', $animal->Name)
                 ->bindValue(':id', $id)
                 ->execute();
             return $this->redirect(['viewanimal']);
@@ -384,4 +376,25 @@ class RegisterController extends Controller
         return $this->render('event/viewinzoo');
     }
 
+    public function actionAddinzoo($id)
+    {
+        return $this->render('event/addinzoo');
+    }
+
 }
+
+// <plugin>
+//             <groupId>org.apache.maven.plugins</groupId>
+//             <artifactId>maven-compiler-plugin</artifactId>
+//             <configuration>
+//                 <source>17</source> <!-- or your Java version -->
+//                 <target>17</target> <!-- or your Java version -->
+//                 <annotationProcessorPaths>
+//                     <path>
+//                         <groupId>org.mapstruct</groupId>
+//                         <artifactId>mapstruct-processor</artifactId>
+//                         <version>1.5.2.Final</version>
+//                     </path>
+//                 </annotationProcessorPaths>
+//             </configuration>
+//         </plugin>

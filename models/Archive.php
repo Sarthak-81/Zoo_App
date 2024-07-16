@@ -21,7 +21,6 @@ class Archive extends ActiveRecord
 {
     public $Entity_Type;
     public $Name;
-    public $entity_id;
     public $Reason;
     public $Archive_Date;
 
@@ -33,7 +32,7 @@ class Archive extends ActiveRecord
     public function rules()
     {
         return [
-            [['Entity_Type', 'Name', 'entity_id', 'Reason', 'Archive_Date'], 'required'],
+            [['Entity_Type', 'Name', 'Reason', 'Archive_Date'], 'required'],
             [['Entity_Type', 'Name', 'Reason'], 'string', 'max' => 255],
             [['Archive_Date'], 'datetime', 'format' => 'yyyy-MM-dd'],
         ];

@@ -16,7 +16,6 @@ $this->title = 'Transfer History';
                     <th scope="col">Sr No</th>
                     <th scope="col">Entity Type</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Entity ID</th>
                     <th scope="col">Reason</th>
                     <th scope="col">Date of Archive</th>
 
@@ -28,7 +27,6 @@ $this->title = 'Transfer History';
                         <th scope="row"><?= $index + 1 ?></th>
                         <td><?= Html::encode($archives['entity_type']) ?></td>
                         <td><?= Html::encode($archives['name']) ?></td>
-                        <td><?= Html::encode($archives['entity_id']) ?></td>
                         <td><?= Html::encode($archives['reason']) ?></td>
                         <td><?= Html::encode($archives['Archive_Date']) ?></td>
                     </tr>

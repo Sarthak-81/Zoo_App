@@ -20,10 +20,8 @@ use yii\db\ActiveRecord;
 class Animal extends ActiveRecord
 {
     public $Name;
-    public $zoo_id; 
     public $Gender;
     public $Species;
-    public $Arrival_Date;
 
     public static function tableName()
     {
@@ -33,9 +31,8 @@ class Animal extends ActiveRecord
     public function rules()
     {
         return [
-            [['Name', 'zoo_id', 'Gender', 'Species', 'Arrival_Date'], 'required'],
+            [['Name', 'Gender', 'Species'], 'required'],
             [['Name', 'Gender', 'Species'], 'string', 'max' => 255],
-            [['Arrival_Date'], 'datetime', 'format' => 'yyyy-MM-dd'],
         ];
     }
 }

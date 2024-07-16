@@ -15,7 +15,6 @@ $form = ActiveForm::begin(); ?>
 
 <?= $form->field($model, 'Name')->textInput(['autofocus' => true]) ?>
 
-<?= $form->field($model, 'zoo_id')->textInput() ?>
 
 <?= $form->field($model, 'Gender')->dropDownList(
     [
@@ -35,7 +34,6 @@ $form = ActiveForm::begin(); ?>
     ['prompt' => 'Select']
 )?>
 
-<?= $form->field($model, 'Arrival_Date')->textInput() ?>
 
 <div class="form-group">
     <?= Html::submitButton('Save Animal', ['class' => 'btn btn-success']) ?>

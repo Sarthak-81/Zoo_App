@@ -24,7 +24,7 @@ $this->title = 'All Zoos';
                     <p class="card-text">Phone: <?= Html::encode($zoo['phone_no']) ?></p>
                     <p class="card-text">Description: <?= Html::encode($zoo['description']) ?></p>
                     <?= Html::a('Edit', ['editzoo', 'id' => $zoo['id']], ['class' => 'btn btn-primary']) ?>
-                    <?= Html::a('View Animals', ['viewinzoo', 'id' => $zoo['id']], ['class' => 'btn btn-info']) ?>
+                    <?= Html::a('Add Animal', ['addinzoo', 'id' => $zoo['id']], ['class' => 'btn btn-info']) ?>
                 </div>
             </div>
         <?php endforeach; ?>

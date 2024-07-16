@@ -24,8 +24,6 @@ $form = ActiveForm::begin(); ?>
 
 <?= $form->field($model, 'Name')->textInput() ?>
 
-<?= $form->field($model, 'entity_id')->textInput() ?>
-
 <?= $form->field($model, 'Reason')->textInput() ?>
 
 <?= $form->field($model, 'Archive_Date')->textInput() ?>
