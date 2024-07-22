@@ -32,9 +32,10 @@ class RegisterController extends Controller
                 'AfterLogin' =>
                 [
                     'class' => AfterLogin::class,
-                    'only' => 
-                    ['logout', 'user', 'profile', 'viewzoo', 'viewanimal', 'addzoo', 'addanimal', 'managehistory', 'viewhistory', 'archive', 'viewarchive',
-                     'editzoo', 'editanimal', 'viewinzoo', 'addinzoo'
+                    'only' =>
+                    [
+                        'logout', 'user', 'profile', 'viewzoo', 'viewanimal', 'addzoo', 'addanimal', 'managehistory', 'viewhistory', 'archive', 'viewarchive',
+                        'editzoo', 'editanimal', 'viewinzoo', 'addinzoo', 'deletezoo'
                     ],
                 ],
             ];
@@ -122,6 +123,8 @@ class RegisterController extends Controller
     }
 
 
+    // curl -X POST http://localhost:8080/login -H "Content-Type: application/json" -d '{"username":"Sarthak","password":"123456"}'
+
     public function actionUser()
     {
         return $this->render('user');
@@ -145,23 +148,12 @@ class RegisterController extends Controller
 
     // Events..............................
 
+    // Zoo
     public function actionAddzoo()
     {
         $model = new Zoo();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-
-            $sql = "INSERT INTO zoo (Name, Location, Phone_no, Description)
-                    VALUES (:Name, :Location, :Phone_no, :Description)";
-
-            $params = [
-                ':Name' => $model->Name,
-                ':Location' => $model->Location,
-                ':Phone_no' => $model->Phone_no,
-                ':Description' => $model->Description,
-            ];
-
-            Yii::$app->db->createCommand($sql, $params)->execute();
 
             $name = $model->Name;
             $location = $model->Location;
@@ -176,7 +168,7 @@ class RegisterController extends Controller
                 ->setData([
                     'name' => $name,
                     'location' => $location,
-                    'phone no' => $phone_no,
+                    'phone_no' => $phone_no,
                     'description' => $description
                 ])
                 ->send();
@@ -186,26 +178,67 @@ class RegisterController extends Controller
                 echo "Some error" . $response->statusCode;
             }
         }
-
         return $this->render('event/addzoo', [
             'model' => $model,
         ]);
+    }
+
+    public function actionViewzoo()
+    {
+        $zoos = Yii::$app->db->createCommand("SELECT * FROM zoo")->queryAll();
+        return $this->render('event/viewzoo', [
+            'zoos' => $zoos,
+        ]);
+    }
+
+    public function actionUpdatezoo($id)
+    {
+        // $model = new Zoo();
+        $model = Zoo::findOne($id);
+        if ($model->load(Yii::$app->request->isPost)) {
+            $description = $model->Description;
+            $phone_no = $model->Phone_no;
+
+            $client = new Client();
+            $url = "http://localhost:8080/zoo/update/{$id}";
+            $response = $client->createRequest()
+                ->setMethod('PUT')
+                ->setFormat(Client::FORMAT_JSON)
+                ->setUrl($url)
+                ->setData([
+                    'phone_no' => $phone_no,
+                    'description' => $description
+                ])
+                ->send();
+            if ($response->isOk) {
+                return $this->redirect(['viewzoo']);
+            }
+        }
+        return $this->render('event/editzoo', [
+            'model' => $model,
+        ]);
+    }
+
+
+    public function actionDeletezoo($id)
+    {
+        $client = new Client();
+        $url = "http://localhost:8080/zoo/delete/{$id}";
+        $response = $client->createRequest()
+            ->setMethod('DELETE')
+            ->setUrl($url)
+            ->send();
+        if ($response->isOk) {
+            return $this->redirect(['viewzoo']);
+        } else {
+            echo "Some error" . $response->statusCode;
+        }
     }
 
     public function actionAddanimal()
     {
         $model = new Animal();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $sql = "INSERT INTO animal (Name, Gender, Species)
-            VALUES (:Name, :Gender, :Species)";
-
-            $params = [
-                'Name' => $model->Name,
-                'Gender' => $model->Gender,
-                'Species' => $model->Species,
-            ];
-
-            Yii::$app->db->createCommand($sql, $params)->execute();
 
             $name = $model->Name;
             $gender = $model->Gender;
@@ -222,19 +255,19 @@ class RegisterController extends Controller
                     'species' => $species,
                 ])
                 ->send();
+
             if ($response->isOk) {
                 return $this->redirect(['viewanimal']);
             } else {
                 echo "Some error" . $response->statusCode;
             }
         }
-
         return $this->render('event/addanimal', [
             'model' => $model,
         ]);
     }
 
-    
+
     public function actionManagehistory()
     {
         $model = new History();
@@ -258,56 +291,58 @@ class RegisterController extends Controller
         ]);
     }
 
+    public function actionViewarchive()
+    {
+        $archive = Yii::$app->db->createCommand("SELECT * FROM archive")->queryAll();
+        return $this->render('event/viewarchive', [
+            'archive' => $archive,
+        ]);
+    }
+
     public function actionArchive()
     {
         $model = new Archive();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $sql = "INSERT INTO archive (Entity_Type, Name, Reason, Archive_Date)
-        VALUES (:Entity_Type, :Name, :Reason, :Archive_Date)";
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) 
+        {
+            $name = $model->Name;
+            $reason = $model->Reason;
+            $entity_type = $model->Entity_Type;
 
-            $params = [
-                'Entity_Type' => $model->Entity_Type,
-                'Name' => $model->Name,
-                'Reason' => $model->Reason,
-                'Archive_Date' => $model->Archive_Date,
-            ];
-            Yii::$app->db->createCommand($sql, $params)->execute();
-            return $this->redirect(['viewarchive']);
+            $client = new Client();
+            $response = $client->createRequest()
+                ->setMethod('POST')
+                ->setUrl('http://localhost:8080/archive/add')
+                ->setFormat(Client::FORMAT_JSON)
+                ->setData([
+                    'name' => $name,
+                    'reason' => $reason,
+                    'entity_type' => $entity_type,
+                ])
+                ->send();
+                if($response->isOk)
+                {
+                    return $this->redirect(['viewarchive']);
+                }
         }
         return $this->render('event/archive', [
             'model' => $model,
         ]);
     }
 
-    public function actionViewzoo()
-    {
-        $zoos = Yii::$app->db->createCommand("SELECT * FROM zoo")->queryAll();
-        return $this->render('event/viewzoo', [
-            'zoos' => $zoos,
-        ]);
-    }
 
     public function actionViewanimal()
     {
         $animals = Yii::$app->db->createCommand("SELECT * FROM animal")->queryAll();
         foreach ($animals as &$animal) {
             $photos = Yii::$app->db->createCommand("SELECT * FROM photo WHERE object_type = 'animal' AND object_id = :animal_id")
-            ->bindValue(':animal_id', $animal['id'])
-            ->queryAll();
-            
+                ->bindValue(':animal_id', $animal['id'])
+                ->queryAll();
+
             // Assign photos to each animal
             $animal['photos'] = $photos;
         }
         return $this->render('event/viewanimal', [
             'animals' => $animals,
-        ]);
-    }
-
-    public function actionViewarchive()
-    {
-        $archive = Yii::$app->db->createCommand("SELECT * FROM archive")->queryAll();
-        return $this->render('event/viewarchive', [
-            'archive' => $archive,
         ]);
     }
 
@@ -325,34 +360,6 @@ class RegisterController extends Controller
 
     // EDIT.........................................
 
-    public function actionEditzoo($id)
-    {
-        $zooData = Yii::$app->db->createCommand('SELECT * FROM zoo WHERE id = :id')
-        // use bindValue to bind a value to a SQL parameter. 
-            ->bindValue(':id', $id)
-            ->queryOne();
-        // This returns an array. 
-
-        // Create a new instance of Zoo model
-        $zoo = new Zoo();
-        // Assign the fetched data to the model attributes
-        $zoo->attributes = $zooData;
-
-        if (Yii::$app->request->isPost && $zoo->load(Yii::$app->request->post())) {
-            // Validate and save the model
-            if ($zoo->validate()) {
-                Yii::$app->db->createCommand('UPDATE zoo SET phone_no = :phone_no, description = :description WHERE id = :id')
-                    ->bindValue(':phone_no', $zoo->Phone_no)
-                    ->bindValue(':description', $zoo->Description)
-                    ->bindValue(':id', $id)
-                    ->execute();
-
-                return $this->redirect(['viewzoo']);
-            }
-        }
-        return $this->render('event/editzoo', ['zoo' => $zoo]);
-    }
-
     public function actionEditanimal($id)
     {
         $animalData = Yii::$app->db->createCommand('SELECT * FROM animal WHERE id = :id')
@@ -360,8 +367,7 @@ class RegisterController extends Controller
             ->queryOne();
         $animal = new Animal();
         $animal->attributes = $animalData;
-        if(Yii::$app->request->isPost && $animal->load(Yii::$app->request->post()))
-        {
+        if (Yii::$app->request->isPost && $animal->load(Yii::$app->request->post())) {
             Yii::$app->db->createCommand('UPDATE animal SET Name = :Name WHERE id = :id')
                 ->bindValue(':Name', $animal->Name)
                 ->bindValue(':id', $id)
@@ -378,23 +384,6 @@ class RegisterController extends Controller
 
     public function actionAddinzoo($id)
     {
-        return $this->render('event/addinzoo');
+        return $this->redirect(['addanimal']);
     }
-
 }
-
-// <plugin>
-//             <groupId>org.apache.maven.plugins</groupId>
-//             <artifactId>maven-compiler-plugin</artifactId>
-//             <configuration>
-//                 <source>17</source> <!-- or your Java version -->
-//                 <target>17</target> <!-- or your Java version -->
-//                 <annotationProcessorPaths>
-//                     <path>
-//                         <groupId>org.mapstruct</groupId>
-//                         <artifactId>mapstruct-processor</artifactId>
-//                         <version>1.5.2.Final</version>
-//                     </path>
-//                 </annotationProcessorPaths>
-//             </configuration>
-//         </plugin>

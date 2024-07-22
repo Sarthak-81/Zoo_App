@@ -32,7 +32,7 @@ $this->registerCss("
 <div class="site-user">
 
     <h2 class="display-5" style="font-style:bold">
-        Welcome, <?= $name ?>
+        Welcome, User
     </h2>
     <br>
     <br>

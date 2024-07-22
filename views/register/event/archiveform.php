@@ -26,7 +26,6 @@ $form = ActiveForm::begin(); ?>
 
 <?= $form->field($model, 'Reason')->textInput() ?>
 
-<?= $form->field($model, 'Archive_Date')->textInput() ?>
 
 <div class="form-group">
     <?= Html::submitButton('Confirm Archive', ['class' => 'btn btn-success']) ?>

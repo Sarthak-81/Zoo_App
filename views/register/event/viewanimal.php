@@ -19,7 +19,7 @@ $this->title = 'All Animals';
                     <?php $photoUrl = Url::to('@web/uploads/animal/' . $animal['photos'][0]['photo_url']); ?>
                     <img src="<?= $photoUrl ?>" class="card-img-top" alt="Animal Photo">
                 <?php else : ?>
-                    <img src="<?= Url::to('@web/uploads/animal/elephant.jpg') ?>" class="card-img-top" alt="Default Photo">
+                    <img src="<?= Url::to('@web/uploads/animal/Peacock.jpg') ?>" class="card-img-top" alt="Default Photo">
                 <?php endif; ?>
                 <div class="card-body">
                     <h5 style="font-weight: bolder;" class="card-title"><?= Html::encode($animal['name']) ?></h5>
@@ -33,7 +33,6 @@ $this->title = 'All Animals';
     </div>
 </div>
 
-                <?= $imageUrl = Url::to('@web/uploads/animal/Tiger.jpg'); ?>
-                <img src="<?= $imageUrl ?>" class="card-img-top" alt="img">
+                
 
 
