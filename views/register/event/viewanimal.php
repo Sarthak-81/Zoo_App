@@ -25,6 +25,7 @@ $this->title = 'All Animals';
                     <h5 style="font-weight: bolder;" class="card-title"><?= Html::encode($animal['name']) ?></h5>
                     <p class="card-text">Gender: <?= Html::encode($animal['gender']) ?></p>
                     <p class="card-text">Species: <?= Html::encode($animal['species']) ?></p>
+                    <p class="card-text">Zoo: <?= Html::encode($animal['zoo']['name']) ?></p>
                     <?= Html::a('Edit', ['editanimal', 'id' => $animal['id']], ['class' => 'btn btn-primary']) ?>
                     <?= Html::a('View Photos', ['#'], ['class' => 'btn btn-info']) ?>
                 </div>

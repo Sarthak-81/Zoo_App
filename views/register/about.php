@@ -16,10 +16,10 @@ $this->title = 'About';
     <p>A user can add Zoo and Animals.
         Zoo have attributes like name, location, phone no, photos, etc.
         Animal can have attributes like name, photos, species, gender, etc.
-        User can edit Animal info and Zoo info.
+        User can edit Animal and Zoo info.
         User can transfer animal from one zoo to another.
         User can manage transfer history of animals.
         One single zoo or animal can have multiple photos.
-        User can archeive animal or zoo. 
+        User can archive animal or zoo. 
     </p>
 </div>

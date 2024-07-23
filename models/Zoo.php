@@ -19,10 +19,6 @@ use yii\db\ActiveRecord;
  */
 class Zoo extends ActiveRecord
 {
-    public $Name;
-    public $Location;
-    public $Phone_no;
-    public $Description;
     public static function tableName()
     {
         return 'zoo'; 
@@ -31,17 +27,19 @@ class Zoo extends ActiveRecord
     public function rules()
     {
         return [
-            [['Name', 'Location', 'Phone_no', 'Description'], 'required'],
-            [['Name', 'Location', 'Phone_no', 'Description'], 'string', 'max' => 255],
+            [['name', 'location', 'phone_no', 'description'], 'required'],
+            [['name', 'location', 'phone_no', 'description'], 'string', 'max' => 255],
         ];
     }
 
-    public function getPhotos()
+    public function attributeLabels()
     {
-        $sql = "SELECT * FROM photo WHERE object_type = 'zoo' AND object_id = :zooId";
-        $params = [':zooId' => $this->id];
-        $photos = Yii::$app->db->createCommand($sql, $params)->queryAll();
+        return [
+            'name' => 'Name',
+            'location' => 'Location',
+            'phone_no' => 'Phone no',
+            'description' => 'Description',
+        ];
+    }   
 
-        return $photos;
-    }
 }

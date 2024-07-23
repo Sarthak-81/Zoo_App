@@ -13,13 +13,13 @@ $form = ActiveForm::begin(); ?>
     <h1 style="color:blue"><?= Html::encode($this->title) ?></h1>
     <br>
 
-<?= $form->field($model, 'Name')->textInput(['autofocus' => true]) ?>
+<?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
 
-<?= $form->field($model, 'Location')->textInput() ?>
+<?= $form->field($model, 'location')->textInput() ?>
 
-<?= $form->field($model, 'Phone_no')->textInput() ?>
+<?= $form->field($model, 'phone_no')->textInput() ?>
 
-<?= $form->field($model, 'Description')->textarea(['rows' => 3]) ?>
+<?= $form->field($model, 'description')->textarea(['rows' => 3]) ?>
 
 <div class="form-group">
     <?= Html::submitButton('Save Zoo', ['class' => 'btn btn-success']) ?>

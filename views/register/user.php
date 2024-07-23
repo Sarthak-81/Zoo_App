@@ -52,7 +52,7 @@ $this->registerCss("
             <div class="col-lg-3">
                 <div class="first">
                 <a href="<?= Yii::$app->urlManager->createUrl(['register/viewanimal']) ?>">All Animals</a>
-                <p>List of Animals that are available with details - Name, Zoo no, Gender, Species, Photo and Arrival Date.</p>
+                <p>List of Animals that are available with details - Name, Gender, Species, Photo, Zoo name.</p>
                 </div>
                 <p><?= Html::a('Add Animal', ['addanimal'], ['class' => 'btn btn-outline-primary']) ?></p>
             </div>

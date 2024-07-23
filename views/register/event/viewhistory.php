@@ -14,13 +14,14 @@ $this->title = 'Transfer History';
         <table class="table table table-striped">
             <thead>
                 <tr>
+                    
                     <th scope="col">Sr No</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Animal ID</th>
-                    <th scope="col">From Zoo ID</th>
-                    <th scope="col">To Zoo ID</th>
+                    <!-- <th scope="col">Animal ID</th> -->
+                    <th scope="col">From</th>
+                    <th scope="col">To</th>
                     <th scope="col">Reason</th>
-                    <th scope="col">Date of Transfer</th>
+                    <th scope="col">Transfer Date</th>
 
                 </tr>
             </thead>
@@ -29,7 +30,6 @@ $this->title = 'Transfer History';
                     <tr>
                         <th scope="row"><?= $index + 1 ?></th>
                         <td><?= Html::encode($history['name']) ?></td>
-                        <td><?= Html::encode($history['animal_id']) ?></td>
                         <td><?= Html::encode($history['from_zoo_id']) ?></td>
                         <td><?= Html::encode($history['to_zoo_id']) ?></td>
                         <td><?= Html::encode($history['reason']) ?></td>
@@ -40,3 +40,6 @@ $this->title = 'Transfer History';
         </table>
     </div>
 </div>
+ 
+
+<!-- Html::encode($history['animal_id']) 

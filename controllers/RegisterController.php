@@ -122,7 +122,6 @@ class RegisterController extends Controller
         ]);
     }
 
-
     // curl -X POST http://localhost:8080/login -H "Content-Type: application/json" -d '{"username":"Sarthak","password":"123456"}'
 
     public function actionUser()
@@ -155,21 +154,16 @@ class RegisterController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
-            $name = $model->Name;
-            $location = $model->Location;
-            $phone_no = $model->Phone_no;
-            $description = $model->Description;
-
             $client = new Client();
             $response = $client->createRequest()
                 ->setMethod('POST')
                 ->setUrl('http://localhost:8080/zoo/add')
                 ->setFormat(Client::FORMAT_JSON)
                 ->setData([
-                    'name' => $name,
-                    'location' => $location,
-                    'phone_no' => $phone_no,
-                    'description' => $description
+                    'name' => $model->name,
+                    'location' => $model->location,
+                    'phone_no' => $model->phone_no,
+                    'description' => $model->description
                 ])
                 ->send();
             if ($response->isOk) {
@@ -191,13 +185,16 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function actionUpdatezoo($id)
+    public function actionEditzoo($id)
     {
-        // $model = new Zoo();
-        $model = Zoo::findOne($id);
-        if ($model->load(Yii::$app->request->isPost)) {
-            $description = $model->Description;
-            $phone_no = $model->Phone_no;
+        $zoo = Yii::$app->db->createCommand('SELECT * FROM zoo WHERE id = :id')
+            ->bindValue(':id', $id)
+            ->queryOne();
+
+        $model = new Zoo();
+        $model->setAttributes($zoo);
+
+        if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
 
             $client = new Client();
             $url = "http://localhost:8080/zoo/update/{$id}";
@@ -206,19 +203,24 @@ class RegisterController extends Controller
                 ->setFormat(Client::FORMAT_JSON)
                 ->setUrl($url)
                 ->setData([
-                    'phone_no' => $phone_no,
-                    'description' => $description
+                    'id' => $model->id,
+                    'name' => $model->name,
+                    'location' => $model->location,
+                    'phone_no' => $model->phone_no,
+                    'description' => $model->description
                 ])
                 ->send();
             if ($response->isOk) {
+                Yii::$app->session->setFlash('success', 'Zoo updated');
                 return $this->redirect(['viewzoo']);
+            }else{
+                Yii::$app->session->setFlash('Some error occurred');    
             }
         }
         return $this->render('event/editzoo', [
             'model' => $model,
         ]);
     }
-
 
     public function actionDeletezoo($id)
     {
@@ -240,19 +242,16 @@ class RegisterController extends Controller
         $model = new Animal();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
-            $name = $model->Name;
-            $gender = $model->Gender;
-            $species = $model->Species;
-
             $client = new Client();
             $response = $client->createRequest()
                 ->setMethod('POST')
                 ->setUrl('http://localhost:8080/animal/add')
                 ->setFormat(Client::FORMAT_JSON)
                 ->setData([
-                    'name' => $name,
-                    'gender' => $gender,
-                    'species' => $species,
+                    'name' => $model->name,
+                    'gender' => $model->gender,
+                    'species' => $model->species,
+                    'zooId' => $model->zoo_id,
                 ])
                 ->send();
 
@@ -271,20 +270,24 @@ class RegisterController extends Controller
     public function actionManagehistory()
     {
         $model = new History();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $sql = "INSERT INTO transfer_history (name, animal_id, from_zoo_id, to_zoo_id, reason, Transfer_Date)
-        VALUES (:name, :animal_id, :from_zoo_id, :to_zoo_id, :reason, :Transfer_Date)";
-
-            $params = [
-                'name' => $model->name,
-                'animal_id' => $model->animal_id,
-                'from_zoo_id' => $model->from_zoo_id,
-                'to_zoo_id' => $model->to_zoo_id,
-                'reason' => $model->reason,
-                'Transfer_Date' => $model->Transfer_Date,
-            ];
-            Yii::$app->db->createCommand($sql, $params)->execute();
-            return $this->redirect(['viewhistory']);
+        if($model->load(Yii::$app->request->post()) && $model->validate())
+        {
+            $client = new Client();
+            $response = $client->createRequest()
+                ->setMethod('POST')
+                ->setUrl('http://localhost:8080/history/add')
+                ->setFormat(Client::FORMAT_JSON)
+                ->setData([
+                    'name' => $model->name,
+                    'reason' => $model->reason,
+                    
+                ])
+                ->send();
+            if($response->isOk){
+                return $this->redirect(['viewhistory']);
+            }else{
+                echo "Some error" . $response->statusCode;
+            }
         }
         return $this->render('event/managehistory', [
             'model' => $model,

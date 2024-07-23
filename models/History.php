@@ -1,7 +1,7 @@
 <?php
 
 namespace app\models;
-
+use Yii;
 use DateTime;
 use yii\db\ActiveRecord;
 
@@ -31,6 +31,17 @@ class History extends ActiveRecord
         return 'transfer_history';
     }
 
+    public function attributeLabels()
+    {
+        return[
+            'name' => 'Name',
+            'reason' => 'Reason',
+            'from_zoo_id' => 'From',
+            'to_zoo_id' => 'To', 
+            'Transfer_Date' => 'Transfer Date'
+        ];
+    }
+
     public function rules()
     {
         return [
@@ -38,5 +49,11 @@ class History extends ActiveRecord
             [['name', 'reason'], 'string', 'max' => 255],
             [['Transfer_Date'], 'datetime', 'format' => 'yyyy-MM-dd'],
         ];
+    }
+
+    public static function getAllZoos()
+    {
+        $sql = "SELECT id, name FROM zoo";
+        return Yii::$app->db->createCommand($sql)->queryAll();
     }
 }

@@ -4,6 +4,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+use app\models\History;
 
 $this->title = 'Transfer Animal';
 
@@ -14,11 +16,25 @@ $form = ActiveForm::begin(); ?>
 
 <?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
 
-<?= $form->field($model, 'animal_id')->textInput() ?>
+<?php
+    $zoos = History::getAllZoos();
+    $zooList = ArrayHelper::map($zoos, 'id', 'name');
+    ?>
 
-<?= $form->field($model, 'from_zoo_id')->textInput() ?>
+    <?= $form->field($model, 'from_zoo_id')->dropDownList(
+        $zooList,
+        ['prompt' => 'Select Zoo']
+    ) ?>
 
-<?= $form->field($model, 'to_zoo_id')->textInput() ?>
+    <?php
+    $zoos = History::getAllZoos();
+    $zooList = ArrayHelper::map($zoos, 'id', 'name');
+    ?>
+
+    <?= $form->field($model, 'to_zoo_id')->dropDownList(
+        $zooList,
+        ['prompt' => 'Select Zoo']
+    ) ?>
 
 <?= $form->field($model, 'reason')->textInput() ?>
 
