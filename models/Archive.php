@@ -1,38 +1,52 @@
 <?php
 
 namespace app\models;
-
-use DateTime;
+use Yii;
 use yii\db\ActiveRecord;
-
-/**
- * Class AnimalS
- *
- * @property int $id
- * @property string $Entity_Type
- * @property int $Name
- * @property int $entity_id
- * @property string $Reason
- * @property datetime $Archive_Date
- * 
- */
 
 class Archive extends ActiveRecord
 {
-    public $Entity_Type;
-    public $Name;
-    public $Reason;
+    public $entity_type;
+    public $name;
+    public $reason;
+    public $zoo_id;
+    public $animal_id;
 
     public static function tableName()
     {
         return 'archive';
     }
 
+    public function attributeLabels()
+    {
+        return[
+           'entity_type' => 'Entity Type',
+           'name' => 'Name',
+           'reason' => 'Reason',
+           'zoo_id' => 'Zoo',
+           'animal_id' => 'Animal',
+        ];
+    }
+
     public function rules()
     {
         return [
-            [['Entity_Type', 'Name', 'Reason', 'Archive_Date'], 'required'],
-            [['Entity_Type', 'Name', 'Reason'], 'string', 'max' => 255],
+            [['entity_type', 'name', 'reason', 'archive_date'], 'required'],
+            [['entity_type', 'name', 'reason'], 'string', 'max' => 255],
+            [['archive_date'], 'datetime', 'format' => 'yyyy-MM-dd'],
+            [['zoo_id', 'animal_id'], 'integer'],
         ];
+    }
+
+    public static function getAllZoos()
+    {
+        $sql = "SELECT id, name FROM zoo";
+        return Yii::$app->db->createCommand($sql)->queryAll();
+    }
+
+    public static function getAllAnimals()
+    {
+        $sql = "SELECT id, name from animal";
+        return Yii::$app->db->createCommand($sql)->queryAll();
     }
 }

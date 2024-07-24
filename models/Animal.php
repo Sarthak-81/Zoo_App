@@ -20,9 +20,10 @@ use yii\db\ActiveRecord;
 
 class Animal extends ActiveRecord
 {
-    public $Name;
-    public $Gender;
-    public $Species;
+    public $name;
+    public $gender;
+    public $species;
+    public $zoo_id;
 
     public static function tableName()
     {
@@ -49,6 +50,12 @@ class Animal extends ActiveRecord
         ];
     }
 
+    public static function getAllZoos()
+    {
+        $sql = "SELECT id, name FROM zoo";
+        return Yii::$app->db->createCommand($sql)->queryAll();
+    }
+
     public function getZoo()
     {
         $sql = "SELECT * FROM zoo WHERE id = :zoo_id";
@@ -56,10 +63,5 @@ class Animal extends ActiveRecord
         return Yii::$app->db->createCommand($sql, $params)->queryOne();
     }
 
-    public static function getAllZoos()
-    {
-        $sql = "SELECT id, name FROM zoo";
-        return Yii::$app->db->createCommand($sql)->queryAll();
-    }
-
 }
+

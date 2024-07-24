@@ -12,7 +12,7 @@ $form = Activeform::begin();
 <div class="animal-edit">
     <h1>Edit Animal Details</h1>
 
-    <?= $form->field($animal, 'Name')->textInput(['autofocus' => true]) ?>
+    <?= $form->field($animal, 'name')->textInput(['autofocus' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Update', ['class' => 'btn btn-success']) ?>

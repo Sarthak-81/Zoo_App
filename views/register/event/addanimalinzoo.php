@@ -4,10 +4,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\helpers\ArrayHelper;
-use app\models\Animal;
 
-$this->title = 'Add Animal';
+$this->title = 'Add Animal to ' . Html::encode($zoo['name']);
 
 $form = ActiveForm::begin(); ?>
 
@@ -17,8 +15,7 @@ $form = ActiveForm::begin(); ?>
 
 <?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
 
-
-<?= $form->field($model, 'gender')->dropDownList(
+<?= $form->field($model, 'gender')-> dropDownList(
     [
         'male' =>'male',
         'female' => 'female',
@@ -26,7 +23,7 @@ $form = ActiveForm::begin(); ?>
     ['prompt' => 'Select']
 )?>
 
-<?= $form->field($model, 'species')->dropDownList(
+<?= $form->field($model, 'species')-> dropDownList(
     [
         'mammal' =>'mammal',
         'reptile' => 'reptile',
@@ -35,19 +32,6 @@ $form = ActiveForm::begin(); ?>
     ], 
     ['prompt' => 'Select']
 )?>
-
-<!--getAllZoos is used to populate all the zoos in the dropdown -->
-
-<?php
-    $zoos = Animal::getAllZoos();
-    $zooList = ArrayHelper::map($zoos, 'id', 'name');
-    ?>
-
-    <?= $form->field($model, 'zoo_id')->dropDownList(
-        $zooList,
-        ['prompt' => 'Select Zoo']
-    ) ?>
-
 
 <div class="form-group">
     <?= Html::submitButton('Save Animal', ['class' => 'btn btn-success']) ?>

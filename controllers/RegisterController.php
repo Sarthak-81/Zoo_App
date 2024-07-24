@@ -35,7 +35,7 @@ class RegisterController extends Controller
                     'only' =>
                     [
                         'logout', 'user', 'profile', 'viewzoo', 'viewanimal', 'addzoo', 'addanimal', 'managehistory', 'viewhistory', 'archive', 'viewarchive',
-                        'editzoo', 'editanimal', 'viewinzoo', 'addinzoo', 'deletezoo'
+                        'editzoo', 'editanimal', 'addinzoo', 'deletezoo'
                     ],
                 ],
             ];
@@ -68,19 +68,15 @@ class RegisterController extends Controller
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
 
-            $name = $model->name;
-            $email = $model->email;
-            $password = $model->password;
-
             $client = new Client();
             $response = $client->createRequest()
                 ->setMethod('POST')
                 ->setUrl('http://localhost:8080/signup')
                 ->setFormat(Client::FORMAT_JSON)
                 ->setData([
-                    'name' => $name,
-                    'email' => $email,
-                    'password' => $password,
+                    'name' => $model->name,
+                    'email' => $model->email,
+                    'password' => $model->password,
                 ])
                 ->send();
             if ($response->isOk) {
@@ -213,8 +209,8 @@ class RegisterController extends Controller
             if ($response->isOk) {
                 Yii::$app->session->setFlash('success', 'Zoo updated');
                 return $this->redirect(['viewzoo']);
-            }else{
-                Yii::$app->session->setFlash('Some error occurred');    
+            } else {
+                Yii::$app->session->setFlash('Some error occurred');
             }
         }
         return $this->render('event/editzoo', [
@@ -235,6 +231,39 @@ class RegisterController extends Controller
         } else {
             echo "Some error" . $response->statusCode;
         }
+    }
+
+    public function actionAddinzoo($id)
+    {
+        $model = new Animal();
+
+        $zoo = Yii::$app->db->createCommand("SELECT * FROM zoo where id = :id")
+            ->bindValue(':id', $id)
+            ->queryOne();
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $client = new Client();
+            $url = "http://localhost:8080/animal/addinzoo/{$id}";
+            $response = $client->createRequest()
+                ->setMethod('POST')
+                ->setUrl($url)
+                ->setFormat(Client::FORMAT_JSON)
+                ->setData([
+                    'name' => $model->name,
+                    'gender' => $model->gender,
+                    'species' => $model->species,
+                ])
+                ->send();
+            if ($response->isOk) {
+                return $this->redirect(['viewzoo']);
+            } else {
+                echo "Some error" . $response->statusCode;
+            }
+        }
+        return $this->render('event/addanimalinzoo', [
+            'model' => $model,
+            'zoo' => $zoo
+        ]);
     }
 
     public function actionAddanimal()
@@ -261,17 +290,15 @@ class RegisterController extends Controller
                 echo "Some error" . $response->statusCode;
             }
         }
-        return $this->render('event/addanimal', [
+        return $this->render('event/animalform', [
             'model' => $model,
         ]);
     }
 
-
     public function actionManagehistory()
     {
         $model = new History();
-        if($model->load(Yii::$app->request->post()) && $model->validate())
-        {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $client = new Client();
             $response = $client->createRequest()
                 ->setMethod('POST')
@@ -280,12 +307,14 @@ class RegisterController extends Controller
                 ->setData([
                     'name' => $model->name,
                     'reason' => $model->reason,
-                    
+                    'fromZooName' => $model->from_zoo_id,
+                    'toZooName' => $model->to_zoo_id,
+                    'transferDate' => $model->transfer_date
                 ])
                 ->send();
-            if($response->isOk){
+            if ($response->isOk) {
                 return $this->redirect(['viewhistory']);
-            }else{
+            } else {
                 echo "Some error" . $response->statusCode;
             }
         }
@@ -294,6 +323,35 @@ class RegisterController extends Controller
         ]);
     }
 
+    public function actionArchive()
+    {
+        $model = new Archive();
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $client = new Client();
+            $response = $client->createRequest()
+                ->setMethod('POST')
+                ->setUrl('http://localhost:8080/archive/add')
+                ->setFormat(Client::FORMAT_JSON)
+                ->setData([
+                    'name' => $model->name,
+                    'reason' => $model->reason,
+                    'entity_type' => $model->entity_type,
+                    'zooId' => $model->zoo_id,
+                    'animalId' => $model->animal_id,
+                ])
+                ->send();
+            if ($response->isOk) {
+                return $this->redirect(['viewarchive']);
+            } else {
+                echo "Some error" . $response->statusCode;
+            }
+        }
+        return $this->render('event/archiveform', [
+            'model' => $model,
+        ]);
+    }
+ 
     public function actionViewarchive()
     {
         $archive = Yii::$app->db->createCommand("SELECT * FROM archive")->queryAll();
@@ -301,37 +359,6 @@ class RegisterController extends Controller
             'archive' => $archive,
         ]);
     }
-
-    public function actionArchive()
-    {
-        $model = new Archive();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) 
-        {
-            $name = $model->Name;
-            $reason = $model->Reason;
-            $entity_type = $model->Entity_Type;
-
-            $client = new Client();
-            $response = $client->createRequest()
-                ->setMethod('POST')
-                ->setUrl('http://localhost:8080/archive/add')
-                ->setFormat(Client::FORMAT_JSON)
-                ->setData([
-                    'name' => $name,
-                    'reason' => $reason,
-                    'entity_type' => $entity_type,
-                ])
-                ->send();
-                if($response->isOk)
-                {
-                    return $this->redirect(['viewarchive']);
-                }
-        }
-        return $this->render('event/archive', [
-            'model' => $model,
-        ]);
-    }
-
 
     public function actionViewanimal()
     {
@@ -343,7 +370,15 @@ class RegisterController extends Controller
 
             // Assign photos to each animal
             $animal['photos'] = $photos;
+
+            // Fetching zoo information
+            $zoo = Yii::$app->db->createCommand("SELECT * FROM zoo WHERE id = :zoo_id")
+                ->bindValue(':zoo_id', $animal['zoo_id'])
+                ->queryOne();
+            // Assigning zoo information to each animal
+            $animal['zoo'] = $zoo;
         }
+
         return $this->render('event/viewanimal', [
             'animals' => $animals,
         ]);
@@ -371,8 +406,8 @@ class RegisterController extends Controller
         $animal = new Animal();
         $animal->attributes = $animalData;
         if (Yii::$app->request->isPost && $animal->load(Yii::$app->request->post())) {
-            Yii::$app->db->createCommand('UPDATE animal SET Name = :Name WHERE id = :id')
-                ->bindValue(':Name', $animal->Name)
+            Yii::$app->db->createCommand('UPDATE animal SET Name = :name WHERE id = :id')
+                ->bindValue(':name', $animal->name)
                 ->bindValue(':id', $id)
                 ->execute();
             return $this->redirect(['viewanimal']);
@@ -380,13 +415,4 @@ class RegisterController extends Controller
         return $this->render('event/editanimal', ['animal' => $animal]);
     }
 
-    public function actionViewinzoo($id)
-    {
-        return $this->render('event/viewinzoo');
-    }
-
-    public function actionAddinzoo($id)
-    {
-        return $this->redirect(['addanimal']);
-    }
 }

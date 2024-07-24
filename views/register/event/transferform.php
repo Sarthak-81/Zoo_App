@@ -18,7 +18,7 @@ $form = ActiveForm::begin(); ?>
 
 <?php
     $zoos = History::getAllZoos();
-    $zooList = ArrayHelper::map($zoos, 'id', 'name');
+    $zooList = ArrayHelper::map($zoos, 'name', 'name'); // both key and value are name
     ?>
 
     <?= $form->field($model, 'from_zoo_id')->dropDownList(
@@ -38,7 +38,7 @@ $form = ActiveForm::begin(); ?>
 
 <?= $form->field($model, 'reason')->textInput() ?>
 
-<?= $form->field($model, 'Transfer_Date')->textInput() ?>
+<?= $form->field($model, 'transfer_date')->textInput() ?>
 
 <div class="form-group">
     <?= Html::submitButton('Confirm Transfer', ['class' => 'btn btn-success']) ?>
@@ -47,3 +47,6 @@ $form = ActiveForm::begin(); ?>
 <?php ActiveForm::end(); ?>
         
 </div>
+<!-- I want when users enters name of animal, spring should check if animal exists in animal table, if it exists then save name in db and save animal_id from the name of animal entered by user -->
+<!-- From shows list of zoos, it should save zooid in from_zoo_id field by name of the zoo same with To -->
+<!-- Also when animal gets transfered from one zoo to another the zoo_id field in animal table should gets updated -->

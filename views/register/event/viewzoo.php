@@ -15,9 +15,9 @@ $this->title = 'All Zoos';
 
     <div class="row">
         <?php foreach ($zoos as $zoo) : ?>
-            <div class="card" style="width: 18rem;">
-           <?= $imageUrl = Url::to('@web/uploads/zoo/Delhizoo.jpg'); ?>
-                <img src="<?= $imageUrl ?>" class="card-img-top" alt="img">
+            <div class="card" style="width: 18rem;"> 
+                <?php $photoUrl = Url::to('@web/uploads/zoo/Delhizoo.jpg'); ?>
+                <img src="<?= $photoUrl ?>" class="card-img-top" alt="Zoo Photo">
                 <div class="card-body">
                     <h5 style="font-weight: bolder;" class="card-title"><?= Html::encode($zoo['name']) ?></h5>
                     <p class="card-text">Location: <?= Html::encode($zoo['location']) ?></p>

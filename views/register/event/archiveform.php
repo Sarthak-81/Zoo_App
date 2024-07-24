@@ -1,3 +1,9 @@
+ <!-- $zoos = Archive::getAllZoos();
+ $zooList = ArrayHelper::map($zoos, 'id', 'name');
+
+ $animals = Archive::getAllAnimals(); 
+ $animalList = ArrayHelper::map($animals, 'id', 'name'); -->
+
 <?php
 
 /** @var yii\web\View $this */
@@ -5,16 +11,16 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-$this->title = 'Archive Entity';
+$this->title = 'Create Archive';
 
 $form = ActiveForm::begin(); ?>
 
 <div class="event-transfer-form">
     <h1 style="color:blue"><?= Html::encode($this->title) ?></h1>
-
+    <p style="color: yellowgreen"> <b>NOTE</b> - Creating an archive will permanently delete an entity.</p>
     <br>
 
-<?= $form->field($model, 'Entity_Type')->dropDownList(
+<?= $form->field($model, 'entity_type')->dropDownList(
     [
         'Zoo' =>'Zoo',
         'Animal' => 'Animal',
@@ -22,10 +28,10 @@ $form = ActiveForm::begin(); ?>
     ['prompt' => 'Select']
 ) ?>
 
-<?= $form->field($model, 'Name')->textInput() ?>
+<!-- want to add a dropdown menu based on entity type -->
+<?= $form->field($model, 'name')->textInput()?>
 
-<?= $form->field($model, 'Reason')->textInput() ?>
-
+<?= $form->field($model, 'reason')->textInput() ?>
 
 <div class="form-group">
     <?= Html::submitButton('Confirm Archive', ['class' => 'btn btn-success']) ?>
@@ -34,3 +40,7 @@ $form = ActiveForm::begin(); ?>
 <?php ActiveForm::end(); ?>
         
 </div>
+
+
+
+

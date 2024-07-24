@@ -24,7 +24,7 @@ class History extends ActiveRecord
     public $from_zoo_id;
     public $to_zoo_id;
     public $reason;
-    public $Transfer_Date;
+    public $transfer_date;
 
     public static function tableName()
     {
@@ -38,16 +38,16 @@ class History extends ActiveRecord
             'reason' => 'Reason',
             'from_zoo_id' => 'From',
             'to_zoo_id' => 'To', 
-            'Transfer_Date' => 'Transfer Date'
+            'transfer_date' => 'Transfer Date'
         ];
     }
 
     public function rules()
     {
         return [
-            [['name', 'animal_id', 'from_zoo_id', 'to_zoo_id', 'reason', 'Transfer_Date'], 'required'],
+            [['name', 'animal_id', 'from_zoo_id', 'to_zoo_id', 'reason', 'transfer_date'], 'required'],
             [['name', 'reason'], 'string', 'max' => 255],
-            [['Transfer_Date'], 'datetime', 'format' => 'yyyy-MM-dd'],
+            [['transfer_date'], 'datetime', 'format' => 'yyyy-MM-dd'],
         ];
     }
 
