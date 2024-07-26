@@ -14,31 +14,20 @@ $form = ActiveForm::begin(); ?>
 <div class="event-transfer-form">
     <h1 style="color:blue"><?= Html::encode($this->title) ?></h1>
 
-<?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
+<?= $form->field($model, 'name')->textInput(['readOnly' => true]) ?>
 
-<?php
-    $zoos = History::getAllZoos();
-    $zooList = ArrayHelper::map($zoos, 'name', 'name'); // both key and value are name
-    ?>
 
-    <?= $form->field($model, 'from_zoo_id')->dropDownList(
-        $zooList,
-        ['prompt' => 'Select Zoo']
-    ) ?>
+<?= $form->field($model, 'from_zoo_id')->textInput(['readOnly' => true]) ?>
 
-    <?php
-    $zoos = History::getAllZoos();
-    $zooList = ArrayHelper::map($zoos, 'id', 'name');
-    ?>
 
     <?= $form->field($model, 'to_zoo_id')->dropDownList(
-        $zooList,
+         ArrayHelper::map(History::getAllZoos(), 'id', 'name'),
         ['prompt' => 'Select Zoo']
     ) ?>
 
 <?= $form->field($model, 'reason')->textInput() ?>
 
-<?= $form->field($model, 'transfer_date')->textInput() ?>
+<?= $form->field($model, 'transfer_date')->input('date') ?>
 
 <div class="form-group">
     <?= Html::submitButton('Confirm Transfer', ['class' => 'btn btn-success']) ?>

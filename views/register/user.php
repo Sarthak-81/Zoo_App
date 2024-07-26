@@ -59,18 +59,18 @@ $this->registerCss("
 
             <div class="col-lg-3">
                 <div class="first">
-                <a href="<?= Yii::$app->urlManager->createUrl(['register/viewhistory']) ?>">Transfer History</a>
+                 <h3>Transfer History</h3>   
                 <p>All transfer records of Animal from one Zoo to another with valid reason for the transfer to happen.</p>
                 </div>
-                <p><?= Html::a('Add Transfer', ['managehistory'], ['class' => 'btn btn-outline-primary']) ?></p>
+                <p><?= Html::a('View History', ['viewhistory'], ['class' => 'btn btn-outline-primary']) ?></p>
             </div>
 
             <div class="col-lg-3">
                 <div class="first">
-                <a href="<?= Yii::$app->urlManager->createUrl(['register/viewarchive']) ?>">Archive</a>
+                <h3>Archive</h3>
                 <p>All the archive records of Zoos and Animals that have occurred in the past with valid reason.</p>
                 </div>
-                <p><?= Html::a('Add Archive', ['archive'], ['class' => 'btn btn-outline-primary']) ?></p>
+                <p><?= Html::a('View Archive', ['viewarchive'], ['class' => 'btn btn-outline-primary']) ?></p>
             </div>
 
         </div </div>

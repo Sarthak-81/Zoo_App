@@ -31,22 +31,15 @@ class Archive extends ActiveRecord
     public function rules()
     {
         return [
-            [['entity_type', 'name', 'reason', 'archive_date'], 'required'],
+            [['entity_type', 'name', 'reason'], 'required'],
             [['entity_type', 'name', 'reason'], 'string', 'max' => 255],
-            [['archive_date'], 'datetime', 'format' => 'yyyy-MM-dd'],
             [['zoo_id', 'animal_id'], 'integer'],
         ];
     }
 
-    public static function getAllZoos()
-    {
-        $sql = "SELECT id, name FROM zoo";
-        return Yii::$app->db->createCommand($sql)->queryAll();
-    }
-
-    public static function getAllAnimals()
-    {
-        $sql = "SELECT id, name from animal";
-        return Yii::$app->db->createCommand($sql)->queryAll();
-    }
+    // public static function getAllAnimals()
+    // {
+    //     $sql = "SELECT id, name from animal";
+    //     return Yii::$app->db->createCommand($sql)->queryAll();
+    // }
 }

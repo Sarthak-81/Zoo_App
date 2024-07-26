@@ -23,7 +23,8 @@ $this->title = 'All Animals';
                     <p class="card-text">Species: <?= Html::encode($animal['species']) ?></p>
                     <p class="card-text">Zoo: <?= Html::encode($animal['zoo']['name']) ?></p>
                     <?= Html::a('Edit', ['editanimal', 'id' => $animal['id']], ['class' => 'btn btn-primary']) ?>
-                    <?= Html::a('View Photos', [''], ['class' => 'btn btn-info']) ?>
+                    <?= Html::a('Transfer Animal', ['managehistory', 'id' => $animal['id']], ['class' => 'btn btn-success']) ?>
+                    <?= Html::a('Archive', ['archiveanimal', 'id' => $animal['id']], ['class' => 'btn btn-danger']) ?>
                 </div>
             </div>
         <?php endforeach; ?>

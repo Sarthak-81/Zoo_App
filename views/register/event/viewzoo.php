@@ -25,7 +25,7 @@ $this->title = 'All Zoos';
                     <p class="card-text">Description: <?= Html::encode($zoo['description']) ?></p>
                     <?= Html::a('Edit', ['editzoo', 'id' => $zoo['id']], ['class' => 'btn btn-primary']) ?>
                     <?= Html::a('Add Animal', ['addinzoo', 'id' => $zoo['id']], ['class' => 'btn btn-info']) ?>
-                    <?= Html::a('Delete', ['deletezoo', 'id' => $zoo['id']], ['class' => 'btn btn-danger']) ?>
+                    <?= Html::a('Archive', ['archivezoo', 'id' => $zoo['id']], ['class' => 'btn btn-danger']) ?>
                 </div>
             </div>
         <?php endforeach; ?>

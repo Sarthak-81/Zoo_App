@@ -15,7 +15,6 @@ use app\models\Archive;
 use app\filters\BeforeLogin;
 use app\filters\AfterLogin;
 use yii\httpclient\Client;
-use yii\helpers\Url;
 
 class RegisterController extends Controller
 {
@@ -35,7 +34,7 @@ class RegisterController extends Controller
                     'only' =>
                     [
                         'logout', 'user', 'profile', 'viewzoo', 'viewanimal', 'addzoo', 'addanimal', 'managehistory', 'viewhistory', 'archive', 'viewarchive',
-                        'editzoo', 'editanimal', 'addinzoo', 'deletezoo'
+                        'editzoo', 'editanimal', 'addinzoo', 'deletezoo', 'archiveanimal', 'archivezoo'
                     ],
                 ],
             ];
@@ -181,58 +180,6 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function actionEditzoo($id)
-    {
-        $zoo = Yii::$app->db->createCommand('SELECT * FROM zoo WHERE id = :id')
-            ->bindValue(':id', $id)
-            ->queryOne();
-
-        $model = new Zoo();
-        $model->setAttributes($zoo);
-
-        if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
-
-            $client = new Client();
-            $url = "http://localhost:8080/zoo/update/{$id}";
-            $response = $client->createRequest()
-                ->setMethod('PUT')
-                ->setFormat(Client::FORMAT_JSON)
-                ->setUrl($url)
-                ->setData([
-                    'id' => $model->id,
-                    'name' => $model->name,
-                    'location' => $model->location,
-                    'phone_no' => $model->phone_no,
-                    'description' => $model->description
-                ])
-                ->send();
-            if ($response->isOk) {
-                Yii::$app->session->setFlash('success', 'Zoo updated');
-                return $this->redirect(['viewzoo']);
-            } else {
-                Yii::$app->session->setFlash('Some error occurred');
-            }
-        }
-        return $this->render('event/editzoo', [
-            'model' => $model,
-        ]);
-    }
-
-    public function actionDeletezoo($id)
-    {
-        $client = new Client();
-        $url = "http://localhost:8080/zoo/delete/{$id}";
-        $response = $client->createRequest()
-            ->setMethod('DELETE')
-            ->setUrl($url)
-            ->send();
-        if ($response->isOk) {
-            return $this->redirect(['viewzoo']);
-        } else {
-            echo "Some error" . $response->statusCode;
-        }
-    }
-
     public function actionAddinzoo($id)
     {
         $model = new Animal();
@@ -295,21 +242,72 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function actionManagehistory()
+
+    public function actionEditzoo($id)
     {
-        $model = new History();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+        $zoo = Yii::$app->db->createCommand('SELECT * FROM zoo WHERE id = :id')
+            ->bindValue(':id', $id)
+            ->queryOne();
+
+        $model = new Zoo();
+        $model->setAttributes($zoo);
+
+        if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
+
             $client = new Client();
+            $url = "http://localhost:8080/zoo/update/{$id}";
+            $response = $client->createRequest()
+                ->setMethod('PUT')
+                ->setFormat(Client::FORMAT_JSON)
+                ->setUrl($url)
+                ->setData([
+                    'id' => $model->id,
+                    'name' => $model->name,
+                    'location' => $model->location,
+                    'phone_no' => $model->phone_no,
+                    'description' => $model->description
+                ])
+                ->send();
+            if ($response->isOk) {
+                return $this->redirect(['viewzoo']);
+            } else {
+                Yii::$app->session->setFlash('Some error occurred');
+            }
+        }
+        return $this->render('event/editzoo', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionManagehistory($id)
+    {
+        $animal = Yii::$app->db->createCommand('SELECT name FROM animal where id = :id')
+            ->bindValue(':id', $id)
+            ->queryOne();
+
+        $zoo = Yii::$app->db->createCommand('SELECT z.name AS zoo_name FROM animal a JOIN zoo z ON a.zoo_id = z.id where a.id = :id')
+            ->bindValue(':id', $id)
+            ->queryOne();
+
+        $model = new History();
+        $model->name = $animal['name'];
+        $model->from_zoo_id = $zoo['zoo_name'];
+
+        if ($model->load(Yii::$app->request->post())) {
+            $client = new Client();
+            $url = "http://localhost:8080/history/add/{$id}";
             $response = $client->createRequest()
                 ->setMethod('POST')
-                ->setUrl('http://localhost:8080/history/add')
+                ->setUrl($url)
                 ->setFormat(Client::FORMAT_JSON)
                 ->setData([
+                    'id' => $model->id,
                     'name' => $model->name,
                     'reason' => $model->reason,
                     'fromZooName' => $model->from_zoo_id,
                     'toZooName' => $model->to_zoo_id,
-                    'transferDate' => $model->transfer_date
+                    'transferDate' => $model->transfer_date,
+                    'animalID' => $id,
                 ])
                 ->send();
             if ($response->isOk) {
@@ -318,40 +316,87 @@ class RegisterController extends Controller
                 echo "Some error" . $response->statusCode;
             }
         }
-        return $this->render('event/managehistory', [
+        return $this->render('event/transferform', [
             'model' => $model,
         ]);
     }
 
-    public function actionArchive()
+    public function actionArchiveanimal($id)
     {
+        $animal = Yii::$app->db->createCommand('SELECT name FROM animal WHERE id = :id')
+            ->bindValue(':id', $id)
+            ->queryOne();
+
         $model = new Archive();
+        $model->name = $animal['name'];
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
             $client = new Client();
+            $url = "http://localhost:8080/archive/addanimal/{$id}";
             $response = $client->createRequest()
                 ->setMethod('POST')
-                ->setUrl('http://localhost:8080/archive/add')
                 ->setFormat(Client::FORMAT_JSON)
-                ->setData([
-                    'name' => $model->name,
-                    'reason' => $model->reason,
-                    'entity_type' => $model->entity_type,
-                    'zooId' => $model->zoo_id,
-                    'animalId' => $model->animal_id,
-                ])
+                ->setUrl($url)
+                ->setData(
+                    [
+                        'id' => $model->id,
+                        'entity_type' => $model->entity_type,
+                        'name' => $model->name,
+                        'reason' => $model->reason,
+                        'animalId' => $id,
+                        'zooId' => null
+                    ]
+                )
                 ->send();
             if ($response->isOk) {
-                return $this->redirect(['viewarchive']);
+                return $this->redirect(['user']);
             } else {
-                echo "Some error" . $response->statusCode;
+                Yii::$app->session->setFlash("Some error occurred") . $response->statusCode;
+            }
+        }
+        return $this->render('event/archiveformanimal', [
+            'model' => $model,
+        ]);
+    }
+    
+    public function actionArchivezoo($id)
+    {
+        $zoo = Yii::$app->db->createCommand('SELECT name FROM zoo where id = :id')
+            ->bindValue(':id', $id)
+            ->queryOne();
+
+        $model = new Archive();
+        $model->name = $zoo['name'];
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $client = new Client();
+            $url = "http://localhost:8080/archive/addzoo/{$id}";
+            $response = $client->createRequest()
+                ->setMethod('POST')
+                ->setFormat(Client::FORMAT_JSON)
+                ->setUrl($url)
+                ->setData(
+                    [
+                        'id' => $model->id,
+                        'entity_type' => $model->entity_type,
+                        'name' => $model->name,
+                        'reason' => $model->reason,
+                        'animalId' => null,
+                        'zooId' => $id,
+                    ]
+                )
+                ->send();
+            if ($response->isOk) {
+                return $this->redirect(['user']);
+            } else {
+                Yii::$app->session->setFlash("Some error occurred") . $response->statusCode;
             }
         }
         return $this->render('event/archiveform', [
             'model' => $model,
         ]);
     }
- 
+
     public function actionViewarchive()
     {
         $archive = Yii::$app->db->createCommand("SELECT * FROM archive")->queryAll();
@@ -414,5 +459,4 @@ class RegisterController extends Controller
         }
         return $this->render('event/editanimal', ['animal' => $animal]);
     }
-
 }

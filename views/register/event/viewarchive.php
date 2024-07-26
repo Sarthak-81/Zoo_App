@@ -22,13 +22,14 @@ $this->title = 'Transfer History';
                 </tr>
             </thead>
             <tbody>
+                <!-- error - Undefined variable $archive -->
                 <?php foreach ($archive as $index => $archives) : ?>
                     <tr>
                         <th scope="row"><?= $index + 1 ?></th>
                         <td><?= Html::encode($archives['entity_type']) ?></td>
                         <td><?= Html::encode($archives['name']) ?></td>
                         <td><?= Html::encode($archives['reason']) ?></td>
-                        <td><?= Html::encode($archives['Archive_Date']) ?></td>
+                        <td><?= Html::encode($archives['archive_date']) ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

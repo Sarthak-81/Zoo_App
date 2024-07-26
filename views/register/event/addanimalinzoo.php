@@ -5,7 +5,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-$this->title = 'Add Animal to ' . Html::encode($zoo['name']);
+$this->title = 'Add Animal in ' . Html::encode($zoo['name']);
 
 $form = ActiveForm::begin(); ?>
 
@@ -40,3 +40,5 @@ $form = ActiveForm::begin(); ?>
 <?php ActiveForm::end(); ?>
         
 </div>
+
+ 

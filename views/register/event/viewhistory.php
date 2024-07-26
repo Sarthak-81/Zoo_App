@@ -17,7 +17,6 @@ $this->title = 'Transfer History';
                     
                     <th scope="col">Sr No</th>
                     <th scope="col">Name</th>
-                    <!-- <th scope="col">Animal ID</th> -->
                     <th scope="col">From</th>
                     <th scope="col">To</th>
                     <th scope="col">Reason</th>
@@ -33,7 +32,7 @@ $this->title = 'Transfer History';
                         <td><?= Html::encode($history['from_zoo_id']) ?></td>
                         <td><?= Html::encode($history['to_zoo_id']) ?></td>
                         <td><?= Html::encode($history['reason']) ?></td>
-                        <td><?= Html::encode($history['Transfer_Date']) ?></td>
+                        <td><?= Html::encode($history['transfer_date']) ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
